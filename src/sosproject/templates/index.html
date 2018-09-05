@@ -1,0 +1,612 @@
+
+
+<html>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Bungee+Shade');
+    h1 {
+        font-family: 'Bungee Shade', cursive;
+        font-size: 1.2em;
+        text-align: center;
+    }
+    p {
+        display:inline;
+        font-size: 1em;
+        font-family: Arial, sans-serif;
+    }
+    h3 {
+        font-size: 1em;
+        font-family: Arial, sans-serif;
+    }
+    #head{
+        background-color: #ffffff;
+        height: 6%;
+        width: 100%;
+        border: 1.5px solid #000;
+        line-height: 10px;
+    }
+    canvas{
+        width: 500px !important; 
+        border-left: 1.5px solid #000;
+        border-right: 1.5px solid #000;
+    }
+
+    #chartH{
+        display: inline;
+        width: 500px;
+        text-align:center;
+        position: absolute;
+        bottom: 0%;
+        left: 5%;
+        background-color: #ffffff;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        transition-duration: 0.5s;
+        border: 1.5px solid #000;
+    }
+
+    #chartB{
+        position: absolute;
+        bottom: 0%;
+        left: 5%;
+        background-color: #ffffff;
+    }
+
+    #chartA{
+        width: 500px;
+        text-align:center;
+        position: absolute;
+        bottom: 0%;
+        left: 50%;
+        background-color: #ffffff;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        transition-duration: 0.5s;
+        border: 1.5px solid #000;
+    }
+
+    #chartC{
+        position: absolute;
+        bottom: 0%;
+        left: 50%;
+        background-color: #ffffff;
+    }
+
+    .chart{
+        transition: 0.5s;
+        height: 0;
+    }
+
+    #iw-container  .iw-title {
+   font-family: 'Open Sans Condensed', sans-serif;
+   font-size: 22px;
+   font-weight: 400;
+   padding: 10px;
+   background-color: #000;
+   color: white;
+   margin: 5px;
+   border-radius: 2px 2px 0 0;
+}
+
+    .gm-style-iw {
+   width: 200px !important;
+   top: 15px !important;
+   left: 0 !important;
+   background-color: #fff;
+   margin: 2.5px;
+   padding: 5px;
+   box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
+   border-radius: 2px 2px 10px 10px;
+}
+
+    #legend {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid #000;
+        position: absolute;
+        top: 7%;
+        right: 5%;
+        width: 23%;
+        box-shadow: #5a5a5a5a 5px 5px;
+    }
+
+    #legend h3 {
+        margin-top: 0;
+    }
+      
+    #legend img {
+        vertical-align: middle;
+    }
+
+    #inputBox {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid #000;
+        position: absolute;
+        top: 30.8%;
+        right: 5%;
+        width: 23%;
+        box-shadow: #5a5a5a5a 5px 5px;
+    }
+    #dayinput {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        padding: 10px;
+        margin: 10px;
+        border: 2px solid #000;
+        position: absolute;
+        top: 20%;
+        right: 5%;
+        width: 23%;
+        box-shadow: #5a5a5a5a 5px 5px;
+    }
+    #dayinput h3 {
+        margin-top: 0;
+        margin-bottom: 2;
+    }
+    #inputBox h3 {
+        margin-top: 0;
+        margin-bottom: 2;
+    }
+
+    #origin-input,
+      #destination-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        margin-bottom: 1;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 92%;
+      }
+
+    #origin-input:focus,
+      #destination-input:focus {
+        border-color: #4d90fe;
+      }
+</style>
+<head>
+    <link rel="icon" href="marker.png" type="image/gif" sizes="32x32">
+    <title>Wheres art thine bike?</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id=head>
+        <h1><img src="bikeanimation.gif" height="24px"> Where's me bleedin' bike? <img src="bikeanimation.gif" height="24px"></h1>
+    </div>
+    <div id="map" style="width:100%;height:94%"></div>
+    <div id="legend"><h3>Available Bikes</h3></div>
+
+    <div id="inputBox">
+        <h3>Select Station</h3>
+        <select id="stationSelect" onchange="specificStation(this)"></select>
+    </div>
+
+    <div id="dayinput">
+    <h3>Select your day of the week</h3><select id="daySelect">
+  <option value="Monday">Monday
+  <option value="Tuesday">Tuesday
+  <option value="Wednesday">Wednesday
+  <option value="Thursday">Thursday
+  <option value="Friday">Friday
+  <option value="Saturday">Saturday
+  <option value="Sunday">Sunday
+</select>
+    </div>
+    <span id="chartH" onclick="showHide()">&#9776; <p>Show Graph</p></span>
+    <div id="chartB" class="chart">
+    <div id="graph"><div>
+</div></div>
+    </div>
+    <span id="chartA" onclick="showHide1()">&#9776; <p>Show Graph</p></span>
+    <div id="chartC" class="chart">
+    <div id="graph1"><div>
+</div></div>
+    </div>
+</body>
+<script>
+    // Draws the map
+    function myMap() {
+    var mapOptions = {
+        center: new google.maps.LatLng(53.346521, -6.259077),
+        zoom: 14,
+        mapTypeId: google.maps.MapTypeId.roadmap
+    };
+    
+    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    standInfo = null;
+    if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+            var user = new google.maps.Marker({
+                position: pos,
+            });
+            user.setMap(map);
+        });
+        
+    }
+    // Places pins on the map and shows live bike info
+    function availableBikes(data){
+        $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root3", function(root3){
+           standInfo = root3.root3;
+        })
+    }
+    var markers = [];
+    var infoWindows = [];
+    availableBikes();
+    function newMarkers(data){
+        $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root1", function(root1){
+            var stations = root1.root1;
+            var options = "0";
+            for (i in stations) {
+                var lati = stations[i].lat;
+                var long = stations[i].lng;
+                var name = stations[i].address;
+                var number = stations[i].number;
+                var bikes = standInfo[i].a_bikes;
+                var stands = standInfo[i].stands;
+                var colour = "http://www.googlemapsmarkers.com/v1/"+number+"/";
+                if (bikes == 0) {
+                    colour = colour+"99aabb/"
+                } else if ((bikes / stands) >= 0.7){
+                    colour = colour+"00cc00/"
+                } else if ((bikes / stands >= 0.3)){
+                    colour = colour+"ffff00/"
+                } else if ((bikes / stands) > 0.1) {
+                    colour = colour+"ff6600/"
+                }else if ((bikes / stands) <= 0.1) {
+                    colour = colour +"ff3300/"
+                }
+                var info = "<div id='iw-container'><h3 class='iw-title'><b>"+number+":</b> "+name+"</h3>"+
+                            "<div class='gm-style-iw'><b>Available bikes: </b>"+bikes+"<br>"+
+                            "<b>Available stands: </b>"+stands+"<br>" +
+                            "<button onclick='avgBikes("+number+");showGraphInfoWin()'>Show chart hourly averages</button><br>" + 
+                            "<button onclick='avgBikesDay("+number+");showGraphInfoWin1()'>Show chart daily averages</button></div></div>";
+                var iWindowMarker = new google.maps.InfoWindow({});
+                infoWindows[i] = new google.maps.InfoWindow({});
+                google.maps.event.addListener(infoWindows[i], 'domready', function() {
+
+                    var iwOuter = $('.gm-style-iw');
+                    var iwBackground = iwOuter.prev();
+                    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+                    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': '#5a5a5a5a 0px 1px 6px', 'z-index' : '1'});
+                    var iwCloseBtn = iwOuter.next();
+
+                    iwCloseBtn.css({
+                    opacity: '1',
+                    right: '38px', top: '3px',
+                    border: '7px solid #000',
+                    'border-radius': '13px', 
+                    'box-shadow': '0 0 5px #5a5a5a' 
+                    });
+                    iwCloseBtn.mouseout(function(){
+                    $(this).css({opacity: '1'});
+                    });
+                });
+                google.maps.event.addListener(iWindowMarker, 'domready', function() {
+
+                    var iwOuter = $('.gm-style-iw');
+                    var iwBackground = iwOuter.prev();
+                    iwBackground.children(':nth-child(2)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(4)').css({'display' : 'none'});
+                    iwBackground.children(':nth-child(1)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+                    iwBackground.children(':nth-child(3)').attr('style', function(i,s){ return s + 'left: 76px !important;'});
+                    iwBackground.children(':nth-child(3)').find('div').children().css({'box-shadow': '#5a5a5a5a 0px 1px 6px', 'z-index' : '1'});
+                    var iwCloseBtn = iwOuter.next();
+
+                    iwCloseBtn.css({
+                    opacity: '1',
+                    right: '38px', top: '3px',
+                    border: '7px solid #000',
+                    'border-radius': '13px', 
+                    'box-shadow': '0 0 5px #5a5a5a' 
+                    });
+                    iwCloseBtn.mouseout(function(){
+                    $(this).css({opacity: '1'});
+                    });
+                });
+                var markerCol = new google.maps.MarkerImage(colour)
+                markers[i] = new google.maps.Marker({
+                    position: {lat: lati, lng: long},
+                    icon: markerCol,
+                    title: name
+                });
+                markers[i].content = info;
+                markers[i].addListener('click', function() {
+                    //var graphhtml = this.content;
+                    //var graphnum = graphhtml.substring(7, 9);
+                    iWindowMarker.setContent(this.content)
+                    iWindowMarker.open(map, this);
+                });
+                markers[i].setMap(map);
+                options += "<option value="+i+">" + stations[i].address + "</option>";
+            }
+            document.getElementById('stationSelect').innerHTML = options;
+    });
+    }
+    window.specificStation = function (station){
+        var selected = station.value;
+        infoWindows[selected].setContent(markers[selected].content);
+        infoWindows[selected].open(map, markers[selected]);
+    }
+    newMarkers();
+    var legend = document.getElementById('legend');
+    var div = document.createElement('div');
+    div.innerHTML = '<img src="http://www.googlemapsmarkers.com/v1/00cc00/" height="25px"> >70%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ffff00/" height="25px"> 69-30%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ff6600/" height="25px"> 29-11%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/ff3300/" height="25px"> 10-1%'+
+                    '<img src="http://www.googlemapsmarkers.com/v1/99aabb/" height="25px"> None';
+    legend.appendChild(div);
+    
+  }
+
+//  Route finder, not implemented
+//  function AutocompleteDirectionsHandler(map) {
+//        this.map = map;
+//        this.originPlaceId = null;
+//        this.destinationPlaceId = null;
+//        this.travelMode = 'WALKING';
+//        var originInput = document.getElementById('origin-input');
+//        var destinationInput = document.getElementById('destination-input');
+//        this.directionsService = new google.maps.DirectionsService;
+//        this.directionsDisplay = new google.maps.DirectionsRenderer;
+//        this.directionsDisplay.setMap(map);
+//
+//        var originAutocomplete = new google.maps.places.Autocomplete(
+//            originInput, {placeIdOnly: true});
+//        var destinationAutocomplete = new google.maps.places.Autocomplete(
+//            destinationInput, {placeIdOnly: true});
+//
+//        this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+//        this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+//      }
+    
+//      AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+//        var me = this;
+//        autocomplete.bindTo('bounds', this.map);
+//        autocomplete.addListener('place_changed', function() {
+//          var place = autocomplete.getPlace();
+//          if (!place.place_id) {
+//            window.alert("Please select an option from the dropdown list.");
+//            return;
+//          }
+//          if (mode === 'ORIG') {
+//            me.originPlaceId = place.place_id;
+//          } else {
+//            me.destinationPlaceId = place.place_id;
+//          }
+//          me.route();
+//        });
+//
+//      };
+
+//      AutocompleteDirectionsHandler.prototype.route = function() {
+//        if (!this.originPlaceId || !this.destinationPlaceId) {
+//          return;
+//        }
+//        var me = this;
+//
+//        this.directionsService.route({
+//          origin: {'placeId': this.originPlaceId},
+//          destination: {'placeId': this.destinationPlaceId},
+//          travelMode: this.travelMode
+//        }, function(response, status) {
+//          if (status === 'OK') {
+//            me.directionsDisplay.setDirections(response);
+//          } else {
+//            window.alert('Directions request failed due to ' + status);
+//          }
+//        });
+//      };
+
+    // Shows and hides the charts
+    var showGraph = false;
+    function showHide() {
+        if (showGraph == false){
+            document.getElementById('chartB').style.height = "250px";
+            document.getElementById('chartH').style.height = "270px";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
+            showGraph = true;
+        } else {
+            document.getElementById('chartB').style.height = "0px";
+            document.getElementById('chartH').style.height = "Initial";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Show Graph</p>";
+            showGraph =false;
+        }
+    }
+        var showGraph1 = false;
+    function showHide1() {
+        if (showGraph1 == false){
+            document.getElementById('chartC').style.height = "250px";
+            document.getElementById('chartA').style.height = "270px";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
+            showGraph1 = true;
+        } else {
+            document.getElementById('chartC').style.height = "0px";
+            document.getElementById('chartA').style.height = "Initial";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Show Graph</p>";
+            showGraph1 =false;
+        }
+    }
+            var showGraphIW = false;
+    function showGraphInfoWin() {
+        if (showGraphIW == false){
+            document.getElementById('chartB').style.height = "250px";
+            document.getElementById('chartH').style.height = "270px";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Hide Graph</p>";
+            showGraphIW = true;
+        } else {
+            document.getElementById('chartB').style.height = "0px";
+            document.getElementById('chartH').style.height = "Initial";
+            document.getElementById('chartH').innerHTML = "&#9776; <p>Show Graph</p>";
+            showGraphIW = false;
+        }
+    }
+            var showGraphIW1 = false;
+    function showGraphInfoWin1() {
+        if (showGraphIW1 == false){
+            document.getElementById('chartC').style.height = "250px";
+            document.getElementById('chartA').style.height = "270px";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Hide Graph</p>";
+            showGraphIW1 = true;
+        } else {
+            document.getElementById('chartC').style.height = "0px";
+            document.getElementById('chartA').style.height = "Initial";
+            document.getElementById('chartA').innerHTML = "&#9776; <p>Show Graph</p>";
+            showGraphIW1 = false;
+        }
+    }
+    // Chart for hourly average bikes and stands
+    function avgBikes(num){
+    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root4", function(root4){
+            avgInfo = root4.root4;
+            var ava_bikes =[];
+            var numint = parseInt(num) - 1;
+            var names = ["Clarendon Row","Blessington Street","Bolton Street","Greek Street","Charlemont Street","Christchurch Place","High Street","Custom House Quay","Exchequer Street","Dame Street","Earlsfort Terrace","Eccles Street","Fitzwilliam Square West","Fownes Street Upper","Hardwicke Street","Georges Quay","Golden Lane","Grantham Street","Herbert Place","","Leinster Street South","Townsend Street","Custom House","Cathal Brugha Street","Merrion Square East","Merrion Square West","Molesworth Street","Mountjoy Square West","Ormond Quay Upper","Parnell Square North","Parnell Street","Pearse Street","Princes Street / O'Connell Street","Portobello Harbour","Smithfield","St. Stephen's Green East","St. Stephen's Green South","Talbot Street","Wilton Terrace","Jervis Street","Harcourt Terrace","Smithfield North","Portobello Road","Upper Sherrard Street","Deverell Place","Strand Street Great","Herbert Street","Excise Walk","Guild Street","George's Lane","York Street West","York Street East","Newman House","Clonmel Street","Hatch Street","Mount Street Lower","Grattan Street","Sir Patrick's Dun","Denmark Street Great","North Circular Road","Hardwicke Place","Lime Street","Fenian Street","Sandwith Street","Convention Centre","New Central Bank","The Point","Hanover Quay","Grand Canal Dock","Barrow Street","Kevin Street","John Street West","Francis Street","Oliver Bond Street","James Street","Market Street South","Wolfe Tone Street","Mater Hospital","Eccles Street East","St James Hospital (Luas)","St. James Hospital (Central)","Mount Brown","Emmet Road","Brookfield Road","Rothe Abbey","Parkgate Street","Collins Barracks Museum","Blackhall Place","Fitzwilliam Square East","Benson Street","South Dock Road","Heuston Bridge (North)","Heuston Station (Central)","Heuston Station (Car Park)","Royal Hospital","Kilmainham Lane","Kilmainham Gaol","Frederick Street South","City Quay","Heuston Bridge (South)","King Street North","Western Way","Grangegorman Lower (South)","Grangegorman Lower (Central)","Grangegorman Lower (North)"];
+            var ava_stands = [];
+            var time = [];
+            var x = 0;
+            var day = document.getElementById("daySelect").value;
+            while (x <= 23) {
+                for (i in avgInfo){
+                    var y = 2;
+                    var ystr = x.toString();
+                    if (avgInfo[i].number == num && avgInfo[i].weekday == day && avgInfo[i].hour == ystr){
+                        ava_bikes.push(avgInfo[i].a_bikes);
+                        ava_stands.push(avgInfo[i].a_stands);
+                        }
+                    y+=2;
+                }
+                x++;
+            }
+            var can_exist = document.getElementById('canvas1');
+            if (can_exist != null){
+                can_exist.parentNode.removeChild(can_exist);
+            }
+            var create_canvas = document.createElement("canvas");
+            create_canvas.id = "canvas1";
+            var ctx = create_canvas.getContext("2d");
+            div = document.getElementById("graph"); 
+            div.replaceChild(create_canvas, div.childNodes[0]);
+            Chart.defaults.global.defaultFontFamily = "Arial";
+            Chart.defaults.global.defaultFontColor = 'black';
+            var lineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                labels: ["2am","4am","6am","8am","10am","12pm","2pm","4pm","6pm","8pm","10pm", "12am"],
+                datasets: [{ 
+                    data: ava_bikes,
+                    label: "Average free bikes",
+                    borderColor: "#3e95cd",
+                    fill: false
+                },
+                { 
+                    data: ava_stands,
+                    label: "Average free stands",
+                    borderColor: "#8e5ea2",
+                    fill: false
+                }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: names[numint] + ': '+ day,
+                    },
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+        });
+    }
+    
+// Chart for daily average bikes and stands    
+function avgBikesDay(num1){
+    $.getJSON("http://ec2-34-217-47-55.us-west-2.compute.amazonaws.com/root7", function(root7){
+       avgInfoDay = root7.root7;
+       var ava_bikes_day =[];
+       var numint1 = parseInt(num1) - 1;
+       var names = ["Clarendon Row","Blessington Street","Bolton Street","Greek Street","Charlemont Street","Christchurch Place","High Street","Custom House Quay","Exchequer Street","Dame Street","Earlsfort Terrace","Eccles Street","Fitzwilliam Square West","Fownes Street Upper","Hardwicke Street","Georges Quay","Golden Lane","Grantham Street","Herbert Place","","Leinster Street South","Townsend Street","Custom House","Cathal Brugha Street","Merrion Square East","Merrion Square West","Molesworth Street","Mountjoy Square West","Ormond Quay Upper","Parnell Square North","Parnell Street","Pearse Street","Princes Street / O'Connell Street","Portobello Harbour","Smithfield","St. Stephen's Green East","St. Stephen's Green South","Talbot Street","Wilton Terrace","Jervis Street","Harcourt Terrace","Smithfield North","Portobello Road","Upper Sherrard Street","Deverell Place","Strand Street Great","Herbert Street","Excise Walk","Guild Street","George's Lane","York Street West","York Street East","Newman House","Clonmel Street","Hatch Street","Mount Street Lower","Grattan Street","Sir Patrick's Dun","Denmark Street Great","North Circular Road","Hardwicke Place","Lime Street","Fenian Street","Sandwith Street","Convention Centre","New Central Bank","The Point","Hanover Quay","Grand Canal Dock","Barrow Street","Kevin Street","John Street West","Francis Street","Oliver Bond Street","James Street","Market Street South","Wolfe Tone Street","Mater Hospital","Eccles Street East","St James Hospital (Luas)","St. James Hospital (Central)","Mount Brown","Emmet Road","Brookfield Road","Rothe Abbey","Parkgate Street","Collins Barracks Museum","Blackhall Place","Fitzwilliam Square East","Benson Street","South Dock Road","Heuston Bridge (North)","Heuston Station (Central)","Heuston Station (Car Park)","Royal Hospital","Kilmainham Lane","Kilmainham Gaol","Frederick Street South","City Quay","Heuston Bridge (South)","King Street North","Western Way","Grangegorman Lower (South)","Grangegorman Lower (Central)","Grangegorman Lower (North)"];
+       var ava_stands_day = [];
+        console.log(ava_stands_day)
+
+    function dailyBikesAvg(day){
+        for (j in avgInfoDay){
+            if (avgInfoDay[j].number == num1 && avgInfoDay[j].weekday == day){
+                ava_bikes_day.push(avgInfoDay[j].a_bikes);
+                ava_stands_day.push(avgInfoDay[j].a_stands);
+                }}
+    };
+    dailyBikesAvg("Monday");
+    dailyBikesAvg("Tuesday");
+    dailyBikesAvg("Wednesday");
+    dailyBikesAvg("Thursday");
+    dailyBikesAvg("Friday");
+    dailyBikesAvg("Saturday");
+    dailyBikesAvg("Sunday");
+      
+var can_exist = document.getElementById('canvas2');
+if (can_exist != null){
+    can_exist.parentNode.removeChild(can_exist);
+}
+var create_canvas = document.createElement("canvas");
+create_canvas.id = "canvas2";
+var ctx = create_canvas.getContext("2d");
+div = document.getElementById("graph1");
+div.replaceChild(create_canvas, div.childNodes[0]);
+Chart.defaults.global.defaultFontFamily = "Arial";
+Chart.defaults.global.defaultFontColor = 'black';
+var lineChart = new Chart(ctx, {
+ type: 'line',
+    data: {
+    labels: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    datasets: [{ 
+        data: ava_bikes_day,
+        label: "Average free bikes",
+        borderColor: "#3e95cd",
+        fill: false
+      },
+    { 
+        data: ava_stands_day,
+        label: "Average free stands",
+        borderColor: "#8e5ea2",
+        fill: false
+      }
+    ]
+  },
+  options: {
+    title: {
+      display: true,
+      text: names[numint1],
+    },
+    scales: {
+      yAxes: [{
+          ticks: {
+              beginAtZero: true,
+          }
+      }]
+  }
+  }
+});
+ });
+    }
+    </script>
+<script src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyBGhzyl6gLTsqUQ7EqsTaU8vU_1MmhRDCM&libraries=places&callback=myMap" async defer></script>
+<script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+</html>
